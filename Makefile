@@ -1,19 +1,24 @@
-obj-m := mem_dma.o
+SUBDIRS := mem_dma_driver
 
-KDIR := /lib/modules/$(shell uname -r)/build
-PWD  := $(shell pwd)
+.PHONY: all clean host hostdebug arm armdebug armtest
 
 all:
-	$(MAKE) -C $(KDIR) M=$(PWD) modules
+	$(MAKE) -C $(SUBDIRS) all
 
 host:
-	$(MAKE) -C $(KDIR) M=$(PWD) modules
+	$(MAKE) -C $(SUBDIRS) host
 
 hostdebug:
-	$(MAKE) -C $(KDIR) M=$(PWD) EXTRA_CFLAGS="-DDEBUG" modules
+	$(MAKE) -C $(SUBDIRS) hostdebug
 
 arm:
-	$(MAKE) -C $(KDIR) M=$(PWD) EXTRA_CFLAGS="-DARM_BUILD" modules
+	$(MAKE) -C $(SUBDIRS) arm
+
+armdebug:
+	$(MAKE) -C $(SUBDIRS) armdebug
+
+armtest:
+	$(MAKE) -C $(SUBDIRS) armtest
 
 clean:
-	$(MAKE) -C $(KDIR) M=$(PWD) clean
+	$(MAKE) -C $(SUBDIRS) clean
