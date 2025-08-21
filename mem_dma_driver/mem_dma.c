@@ -80,7 +80,7 @@ typedef struct {
 #ifdef BAR4_TEST
   void __iomem *bar4_virt_addr;
   bar4_perf_stats_t perf_stats;
-  u8 *test_buffer;
+  // u8 *test_buffer;
   resource_size_t bar4_size;
 #endif
   dma_addr_t dma_handle;
@@ -213,8 +213,8 @@ static u64 bar4_performance_test(xilinx_dma_dev_t *dev_priv, char rw, char type,
 
     bandwidth_gbps = (total_bytes) / (duration_ns / 1000000); // GB/s
 
-    pr_info("%s: BAR4 %s bandwidth test: %llu GB/s\n", DRIVER_NAME,
-            (rw == 'w') ? "Write" : "Read", bandwidth_gbps);
+    // pr_info("%s: BAR4 %s bandwidth test: %llu GB/s\n", DRIVER_NAME,
+    //         (rw == 'w') ? "Write" : "Read", bandwidth_gbps);
 
     kfree(test_data);
     return bandwidth_gbps;
@@ -255,9 +255,10 @@ static u64 bar4_performance_test(xilinx_dma_dev_t *dev_priv, char rw, char type,
     avg_latency = total_latency / BAR4_LATENCY_ITERATION;
     // printk("[DEBUG]: total_latency = %llu", total_latency);
 
-    pr_info("%s: BAR4 %s latency - Avg: %llu ns, Min: %llu ns, Max: %llu ns\n",
-            DRIVER_NAME, (rw == 'w') ? "Write" : "Read", avg_latency, min_lat,
-            max_lat);
+    // pr_info("%s: BAR4 %s latency - Avg: %llu ns, Min: %llu ns, Max: %llu
+    // ns\n",
+    //         DRIVER_NAME, (rw == 'w') ? "Write" : "Read", avg_latency,
+    //         min_lat, max_lat);
 
     kfree(test_data);
     return avg_latency;
@@ -290,9 +291,9 @@ static void run_bar4_tests(xilinx_dma_dev_t *dev_priv) {
       &dev_priv->perf_stats.max_read_latency_ns);
   pr_info("%s: BAR4 Performance Test Summary:\n", DRIVER_NAME);
   pr_info("%s: ================================\n", DRIVER_NAME);
-  pr_info("%s: Write Bandwidth: %llu MB/s\n", DRIVER_NAME,
+  pr_info("%s: Write Bandwidth: %llu GB/s\n", DRIVER_NAME,
           dev_priv->perf_stats.write_bandwidth_gbps);
-  pr_info("%s: Read Bandwidth:  %llu MB/s\n", DRIVER_NAME,
+  pr_info("%s: Read Bandwidth:  %llu GB/s\n", DRIVER_NAME,
           dev_priv->perf_stats.read_bandwidth_gbps);
   pr_info("%s: Write Latency:   %llu ns (Min: %llu, Max: %llu)\n", DRIVER_NAME,
           dev_priv->perf_stats.write_latency_ns,
@@ -437,7 +438,7 @@ static int mem_dma_probe(struct pci_dev *pdev, const struct pci_device_id *id) {
 #ifdef BAR4_TEST
   if (dev_priv->bar4_virt_addr) {
     run_bar4_tests(dev_priv);
-    kfree(dev_priv->test_buffer);
+    // kfree(dev_priv->test_buffer);
   }
 #endif
 
